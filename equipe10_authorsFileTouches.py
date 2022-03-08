@@ -21,9 +21,10 @@ def import_data(filename):
             author = commit['author']
             for file in files:
                 filename = file['filename']
-                if filename not in modified_files:
-                    modified_files[filename] = []
-                modified_files[filename].append((author['name'], author['date']))
+                if filename.startswith('app/src') and filename.endswith('.java'):
+                    if filename not in modified_files:
+                        modified_files[filename] = []
+                    modified_files[filename].append((author['name'], author['date']))
 
     return modified_files
 
@@ -44,6 +45,10 @@ def main():
 
     # Display data
     display_data(modified_files)
+
+    # export data to json file
+    with open('rootbeer_sorted.json', 'w') as f:
+        json.dump(modified_files, f)
     
 
 if __name__ == "__main__":
