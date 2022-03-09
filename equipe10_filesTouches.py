@@ -29,7 +29,7 @@ def import_data(filename):
             author = commit['author']
             for file in files:
                 filename = file['filename']
-                if filename.startswith('app/src') and is_code_file(filename):
+                if is_code_file(filename):
                     if filename not in modified_files:
                         modified_files[filename] = [filename, 1]
                     modified_files[filename][1] += 1
