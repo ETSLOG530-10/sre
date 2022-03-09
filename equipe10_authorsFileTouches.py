@@ -30,7 +30,7 @@ def import_data(filename):
             author = commit['author']
             for file in files:
                 filename = file['filename']
-                if filename.startswith('app/src') and is_code_file(filename):
+                if is_code_file(filename):
                     if filename not in modified_files:
                         modified_files[filename] = []
                     modified_files[filename].append((author['name'], author['date']))
@@ -49,7 +49,9 @@ def main():
     Main function.
     """
 
-    filename = input("File: ")
+    repo = input("Repo: ")
+
+    filename = CollectFiles.get_github_data(repo)
 
     # Import data form json file
     modified_files = import_data(filename)
