@@ -10,11 +10,7 @@ import json
 import csv
 import CollectFiles
 
-filename = 'D:/Projects/Ecole/LOG530/sre/backpack.json'
-prefixOfFilepaths = 'scripts'
 code_exts = [".kt", ".java", ".cpp", ".h", ".js", ".scss", ".css"]
-
-
 def is_code_file(filename):
     for code_ext in code_exts:
         if filename.endswith(code_ext):
@@ -33,15 +29,12 @@ def import_data(filename):
             files = line['files']
             author = commit['author']
             for file in files:
-                if filename.startswith(prefixOfFilepaths) and is_code_file(filename):
-                    print('if 1')
+                filename = file['filename']
+                if filename.startswith('app/src') and is_code_file(filename):
                     if filename not in modified_files:
-                        print('if 2')
                         modified_files[filename] = []
                     modified_files[filename].append((author['name'], author['date']))
 
-    if len(modified_files) == 0:
-        raise Exception()
     return modified_files
 
 def display_data(modified_files):
@@ -55,20 +48,18 @@ def main():
     """
     Main function.
     """
-    try:
 
-        # Import data form json file
-        modified_files = import_data(filename)
+    filename = input("File: ")
 
-        # Display data
-        display_data(modified_files)
+    # Import data form json file
+    modified_files = import_data(filename)
 
-        # export data to json file
-        with open(f'{filename}_sorted.json', 'w') as f:
-            json.dump(modified_files, f)
-    except:
-        input('Press key...')
-        exit(0)
+    # Display data
+    display_data(modified_files)
+
+    # export data to json file
+    with open(f'{filename}_sorted.json', 'w') as f:
+        json.dump(modified_files, f)
     
 
 if __name__ == "__main__":
