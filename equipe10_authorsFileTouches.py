@@ -8,6 +8,7 @@ the author of each modification and the date of the modification.
 
 import json
 import csv
+import CollectFiles
 
 filename = 'D:/Projects/Ecole/LOG530/sre/backpack.json'
 prefixOfFilepaths = 'scripts'

@@ -9,6 +9,8 @@ import numpy as np
 import json
 from functools import reduce
 import random
+import datetime
+from dateutil import parser
 
 # Constants
 number_of_colors = 20
@@ -51,18 +53,52 @@ def assign_color(authors):
         authors_colored[authors[i]] = colors[i]
     return authors_colored
 
+def get_oldest_date(data):
+    """
+    Get the oldest date from the json data.
+    """
+    # Get all modifications
+    values = list(data.values())
+    # Flatten into single of lists
+    single_list = reduce(lambda x,y: x+y, values)
+    # Flatten into single list
+    single_list = reduce(lambda x,y: x+y, single_list)
+    # Get only dates (odd indexes)
+    only_dates = single_list[1::2]
+    # Get the oldest date
+    oldest_date = min(only_dates)
+    return oldest_date
+
+def convert_date_to_weeks(date, first_date):
+    """
+    Converts a date to weeks, based on the oldest date.
+    """
+    # Get the difference in days
+    diff = date - first_date
+    # Convert to weeks
+    weeks = diff.days / 7
+    return weeks
+
+
 def generate_scatterplot(data, filenames, authors):
     """
     Generate a scatterplot of commits per week and per author.
     """
-    x=filenames
-    y=random.sample(range(0, 50), len(filenames))
-    # Create the colors list using the function above
     authors_colored=assign_color(authors)
-    print(authors_colored)
+    oldest_date = get_oldest_date(data)
+    oldest_date = parser.parse(oldest_date)
+    print(oldest_date)
 
-    plt.scatter(x=x,y=y,s=500) #Pass on the list created by the function here
-    plt.grid(True)
+    file_index = 0
+    for file in data:
+        for modif in data[file]:
+            author = modif[0]
+            date = parser.parse(modif[1])
+            weeks = convert_date_to_weeks(date, oldest_date)
+            plt.scatter(file_index, weeks, color=authors_colored[author])
+        file_index += 1
+
+    # plt.grid(True)
     plt.show()
 
 def main():

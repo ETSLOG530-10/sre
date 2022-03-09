@@ -8,6 +8,7 @@ the author of each modification and the date of the modification.
 
 import json
 import csv
+import CollectFiles
 
 code_exts = [".kt", ".java", ".cpp", ".h", ".js", ".scss", ".css"]
 def is_code_file(filename):
@@ -41,7 +42,9 @@ def main():
     Main function.
     """
 
-    filename = input("File: ")
+    repo = input("Repo: ")
+
+    filename = CollectFiles.get_github_data(repo)
 
     # Import data form json file
     modified_files = import_data(filename)
