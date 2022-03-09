@@ -1,0 +1,1 @@
+"RefactoringMiner.bat" -bc "." 1185f2b770024ce65ec19b8258faaed057acdde5 564d338d221751c04347d6060766ad8aa5ef998c -json "out.json"
